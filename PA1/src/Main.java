@@ -38,30 +38,45 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("Welcome to Bridges Link.\n");
 		System.out.println("Please provide timefall shelter data source: ");
-		WristCuff wCuff;
-		try {
-			 wCuff = getWristCuff();
-			System.out.println("\n=== Data Received ===\n");	
-		} catch (FileNotFoundException e) {
-			System.out.println("\nFile not found. Please re-enter data source: ");
-		}catch (IOException e) {
-			System.out.println(e.getMessage());
-		} catch (JsonSyntaxException e) {
-			System.out.println("\nSyntax error or mismatch in data type in provided json file. Please fix errors and re-enter file name: ");
+		WristCuff wCuff = null;
+		
+		while(true) {
+			try {
+				 wCuff = getWristCuff();
+				System.out.println("\n=== Data Received ===\n");
+				break;
+			} catch (FileNotFoundException e) {
+				System.out.println("\nFile not found. Please re-enter data source: ");
+			}catch (IOException e) {
+				System.out.println(e.getMessage());
+			} catch (JsonSyntaxException e) {
+				System.out.println("\nSyntax error or mismatch in data type in provided json file. Please fix errors and re-enter file name: ");
+			}
 		}
 		
-		try {
-			List<Integer> freqs = getChiralFrequencies();
-			Shelter s = wCuff.findShelter(freqs);
-			System.out.println("=== Compatible Shelter Found ===\n" + "Shelter information:\n");
-			s.toString();
-			System.out.println("=== Commencing Chiral Jump. Be safe, Sam. ===\n");
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		} catch (NumberFormatException e) {
-			System.out.println("\nError in Chiral Frequencies. Ensure they are integers separated by a comma. Re-enter frequencies: ");
+		while(true) {
+			try {
+				List<Integer> freqs = getChiralFrequencies();
+				Shelter s = wCuff.findShelter(freqs);
+				if(s != null) {
+					System.out.println("=== Compatible Shelter Found ===\n" + "Shelter information:\n");
+					s.toString();
+					System.out.println("=== Commencing Chiral Jump. Be safe, Sam. ===\n");
+				} else {
+					System.out.println("=== No Compatible Shelters Found. You are Doomed. === \n");
+				}
+				
+				wCuff.save();
+				break;
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			} catch (NumberFormatException e) {
+				System.out.println("\nError in Chiral Frequencies. Ensure they are integers separated by a comma. Re-enter frequencies: ");
+			}
 		}
 		
+		
+		System.exit(0);
 	}
 
 }

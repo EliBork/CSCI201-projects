@@ -1,6 +1,10 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,6 +34,18 @@ public class WristCuff {
 			}
 		}
 		
+		while(true) {
+			try {
+				for(Shelter s : shelters) {
+					fList.insert(s);
+				}
+				break;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				System.exit(-1);
+			}
+		}
+		
 		
 	}
 	
@@ -37,6 +53,15 @@ public class WristCuff {
 	 * Finds an available shelter that matches one of the provided Chiral Frequencies
 	 */
 	public Shelter findShelter(List<Integer> chiralFrequencies) {
+		Shelter s;
+		for(int i = 0; i < chiralFrequencies.size(); i++) {
+			s = fList.contains(chiralFrequencies.get(i));
+			if(s != null) {
+				return s;
+				//TODO: output statements for finding something 
+			}
+		}
+		
 		return null;
 	}
 	
@@ -44,7 +69,10 @@ public class WristCuff {
 	/**
 	 * Saves the updated list of shelters to disk
 	 */
-	public void save() throws FileNotFoundException {
-		
+	public void save() throws FileNotFoundException, IOException {
+		ArrayList<Shelter> s = fList.ReturnAll(); //get updated list
+		Gson gson = new Gson();
+		PrintWriter outfilePrintWriter = new PrintWriter(new BufferedWriter(new FileWriter(path)));
+		gson.toJson(s, outfilePrintWriter);
 	}
 }
