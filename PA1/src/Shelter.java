@@ -2,23 +2,17 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Shelter extends IntegerComparable {
-	@SerializedName("chiralFrequency")
-	@Expose
+	
 	private Integer chiralFrequency;
-	@SerializedName("timefall")
-	@Expose
+	
 	private Boolean timefall;
-	@SerializedName("guid")
-	@Expose
+	
 	private String guid;
-	@SerializedName("name")
-	@Expose
+	
 	private String name;
-	@SerializedName("phone")
-	@Expose
+	
 	private String phone;
-	@SerializedName("address")
-	@Expose
+	
 	private String address;
 	
 	@Override

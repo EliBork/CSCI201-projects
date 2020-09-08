@@ -60,7 +60,7 @@ public class Main {
 				Shelter s = wCuff.findShelter(freqs);
 				if(s != null) {
 					System.out.println("=== Compatible Shelter Found ===\n" + "Shelter information:\n");
-					s.toString();
+					System.out.println(s.toString());
 					System.out.println("=== Commencing Chiral Jump. Be safe, Sam. ===\n");
 				} else {
 					System.out.println("=== No Compatible Shelters Found. You are Doomed. === \n");

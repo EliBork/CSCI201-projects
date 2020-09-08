@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class WristCuff {	
 	String path;
@@ -20,10 +23,15 @@ public class WristCuff {
 	public WristCuff(String path) throws IOException {
 		this.path = path;
 	
-		Scanner infile = new Scanner(new File(path));
+		//Scanner infile = new Scanner(new File(path));
+		BufferedReader bReader = new BufferedReader((new FileReader(path)));
 		fList = new FastList<Shelter>();
 		Gson gson = new Gson();
-		Shelter[] shelters = gson.fromJson(infile.toString(), Shelter[].class);
+		Shelter[] shelters = gson.fromJson(bReader, Shelter[].class);
+		
+		if(shelters == null) {
+			throw new JsonSyntaxException("");
+		}
 		for(Shelter s : shelters){
 			if(s.getTimefall() != null && s.getChiralFrequency() != null && s.getGuid() != null &&
 					s.getName() != null && s.getPhone() != null && s.getAddress() != null) {
