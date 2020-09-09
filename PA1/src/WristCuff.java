@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -66,7 +65,6 @@ public class WristCuff {
 			s = fList.contains(chiralFrequencies.get(i));
 			if(s != null) {
 				return s;
-				//TODO: output statements for finding something 
 			}
 		}
 		
@@ -79,8 +77,20 @@ public class WristCuff {
 	 */
 	public void save() throws FileNotFoundException, IOException {
 		ArrayList<Shelter> s = fList.ReturnAll(); //get updated list
-		Gson gson = new Gson();
-		PrintWriter outfilePrintWriter = new PrintWriter(new BufferedWriter(new FileWriter(path)));
-		gson.toJson(s, outfilePrintWriter);
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String jsonString = new String("[\n");
+		for(int i = 0; i < s.size(); i++) { //add in json strings
+			jsonString = jsonString.concat(gson.toJson(s.get(i)));
+			if(i + 1 != s.size()) {
+				jsonString = jsonString.concat(",");
+			}
+			jsonString = jsonString.concat("\n");
+		}
+		
+		jsonString = jsonString.concat("]"); //formatting
+		
+		PrintWriter outfilePrintWriter = new PrintWriter(new BufferedWriter(new FileWriter(path))); //write to file
+		outfilePrintWriter.write(jsonString); 
+		outfilePrintWriter.close();
 	}
 }

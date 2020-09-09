@@ -95,13 +95,20 @@ public class FastList<AnyType extends IntegerComparable>
 					System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency match found @ " + curr.next[0].data.getCompareValue() + "!\n\n");
 					return curr.next[0].data;
 				} else if(curr.next[0].data.compareTo(toSearch) > 0){ //if we go over the value, go down a level
-					if(curr.next[1] == null) { //if we are on the bottom layer return null
-						//TODO: print statements for lower bounds
+					if(curr.next.length < 2) { //if we are on the bottom layer return null
+	
 						return null;
 					} else {
-						System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency lower bound found @ " + curr.data.getCompareValue() + "\n");
-						curr = curr.next[1];
-						continue;
+						if(curr.data == null) { //if our lower bound is on 0, just manually say 0
+							System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency lower bound found @ " + 0 + "\n");
+							curr = curr.next[1];
+							continue;
+						}else { //lower bound found, move to next level and notify user
+							System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency lower bound found @ " + curr.data.getCompareValue() + "\n");
+							curr = curr.next[1];
+							continue;
+						}
+						
 					}
 				}
 				
@@ -139,13 +146,18 @@ public class FastList<AnyType extends IntegerComparable>
 						return curr.next[0].data;
 					}
 				} else if(curr.next[0].data.compareTo(toSearch) > 0){ //if we go over the value, go down a level
-					if(curr.next[1] == null) { //if we are on the bottom layer return null
-						//TODO: print statements for lower bounds
+					if(curr.next.length < 0) { //if we are on the bottom layer return null
 						return null;
 					} else {
-						System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency lower bound found @ " + curr.data.getCompareValue() + "\n");
-						curr = curr.next[1];
-						continue;
+						if(curr.data == null) { //if our lower bound is on 0, just manually say 0
+							System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency lower bound found @ " + 0 + "\n");
+							curr = curr.next[1];
+							continue;
+						}else {
+							System.out.println("Level " + (curr.next.length - 1) + " - Chiral frequency lower bound found @ " + curr.data.getCompareValue() + "\n");
+							curr = curr.next[1];
+							continue;
+						}
 					}
 				}
 				curr = curr.next[0];
@@ -169,7 +181,6 @@ public class FastList<AnyType extends IntegerComparable>
 				break;
 			} catch (Exception e){
 				System.out.println(e.getMessage());
-				e.printStackTrace();
 			}
 		}
 		
@@ -234,15 +245,15 @@ public class FastList<AnyType extends IntegerComparable>
 		}
 		
 		
-		if(level > 0) { //insert on lower levels and assign first child
-			insertHelper(newNode, toInsert, level - 1); 
+		if(level > 0) { //insert on lower levels and assign  children
+			AssignFirstChild(newNode, toInsert, level - 1); 
 			AssignAllChildren(newNode);
 			
 		}	
 	}
 	
 	//inserts on lower levels and assigns parents/1st child
-	private void insertHelper(Node<AnyType> parent, AnyType toInsert, int level) {
+	private void AssignFirstChild(Node<AnyType> parent, AnyType toInsert, int level) {
 		Node<AnyType>levelHead = head.next[head.next.length - level - 1]; //head for this level
 		//if this level is empty, put it in this level
 		Node<AnyType> newNode = new Node<AnyType>(level, toInsert);
@@ -263,12 +274,12 @@ public class FastList<AnyType extends IntegerComparable>
 		parent.next[1] = newNode;
 				
 		if(level > 0) { //insert on lower levels
-			insertHelper(newNode, toInsert, level - 1); 
+			AssignFirstChild(newNode, toInsert, level - 1); 
 		}
 	}
 	
 	private void AssignAllChildren(Node<AnyType> newNode) { //assign ALL children at all levels for node. assumes first child has been set for all nodes	
-		Node<AnyType> tNode = newNode;
+		
 		if(newNode.next.length > 1) { //if we arent on level zero assign children
 			while(newNode.next[1] != null) {
 				if(newNode.next.length > 1) {
@@ -286,7 +297,7 @@ public class FastList<AnyType extends IntegerComparable>
 								break;
 							}
 						}
-						newNode = newNode.next[1];
+						newNode = newNode.next[1]; //move down to the next child. assign its children
 					} else {
 						break;
 					}
@@ -294,7 +305,6 @@ public class FastList<AnyType extends IntegerComparable>
 					break;
 				}
 			}
-			AssignAllChildren(tNode.next[1]); //recursively call to assign the child's children
 		}
 		
 	}
@@ -368,15 +378,18 @@ public class FastList<AnyType extends IntegerComparable>
 			curr = curr.next[0];
 		}
 		
-		if(head.next[0] == null) { //if a layer is empty move it down
+		
+		if(head.next[0] == null) { //if top layer  is empty move it down
 			while(head.next[0] == null) {
-				if(head.next.length == 1) { //if we are on layer zero and its is empty just have head
-					//do nothing
-				} else {
-					break;
+				if(head.next.length == 1) {
+					break; //stop fixing head if we are on bottom layer
 				}
+				
+				head = head.next[1];
 			}
 		}
+		
+		
 	}
 	
 	public ArrayList<AnyType> ReturnAll(){ //returns a list of all of the nodes on the bottom row

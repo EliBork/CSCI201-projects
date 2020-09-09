@@ -51,6 +51,8 @@ public class Main {
 				System.out.println(e.getMessage());
 			} catch (JsonSyntaxException e) {
 				System.out.println("\nSyntax error or mismatch in data type in provided json file. Please fix errors and re-enter file name: ");
+			} catch (Exception e){
+				System.out.println("\nFile not found or data typos exist. Please re-enter data source + fix any errors: ");
 			}
 		}
 		
@@ -72,6 +74,8 @@ public class Main {
 				System.out.println(e.getMessage());
 			} catch (NumberFormatException e) {
 				System.out.println("\nError in Chiral Frequencies. Ensure they are integers separated by a comma. Re-enter frequencies: ");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
