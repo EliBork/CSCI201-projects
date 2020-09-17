@@ -27,6 +27,7 @@ public class TestingDriver
 			d.add(1);
 			if(!d.toString().equals("0: [1]\n"))
 			{
+				String s = d.toString();
 				throw new Exception();
 			}
 			d.add(2);

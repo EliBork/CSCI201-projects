@@ -67,10 +67,16 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		}
 
 		size++;
+		if(head == null) {
+			Comparable[] cArr = new Comparable[1];
+			cArr[0] = e;
+			head = new Node(0, cArr, null);
+			return;
+		}
 		Node node = head;
 		Comparable[] cArr = new Comparable[1];
 		cArr[0] = e;
-		head = new Node(0, cArr, node.next);
+		head = new Node(0, cArr, node);
 		mergeDown();
 	}
 
@@ -135,12 +141,12 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 			}
 			size++;
 			Node newNode = new Node(power(2, i), q.poll(), null);
-			removeHelper(newNode);
+			PlaceNode(newNode);
 		}
 		
 	}
 	
-	private void removeHelper(Node n) { //finds this nodes spot then merges if needed
+	private void PlaceNode(Node n) { //finds this nodes spot then merges if needed
 		Node currNode = head;
 		if(currNode == null) {
 			head = n;
@@ -243,7 +249,18 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 			return;
 		}
 
+		size = this.size + other.size;
+		java.util.Queue<Node> q = new java.util.LinkedList<Node>();
+		Node otherHead = other.head;
+		while(otherHead != null) { //put all the nodes of other into a q
+			q.add(otherHead);
+			otherHead = otherHead.next;	
+		}
 		
+		//find the right spot for each node of other
+		for (Node node : q) {
+			PlaceNode(node);
+		}
 
 		throw new RuntimeException("You need to implement this method!");
 	}
@@ -256,7 +273,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		String s = new String("");
 		Node node = head;
 		while(node != null) {
-			s = s.concat(node.array.toString() + "\n");
+			s = s.concat(node.power + ": " + node.array.toString() + "\n");
 			node = node.next;
 		}
 		return s;
@@ -501,9 +518,20 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		public String toString()
 		{
 			return java.util.Arrays.toString(array);
+			
 		}
 	}
 
+	
+	/*
+	 * String string = new String("[");
+			string = string.concat(array[0]);
+			for(int i = 1; i < array.length; i++) {
+				string = string.concat(", " + array[i]);
+			}
+			string = string.concat("]");
+			return string;
+	 */
 }
 
 
