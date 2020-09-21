@@ -68,7 +68,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 
 		size++;
 		if(head == null) {
-			Comparable[] cArr = new Comparable[1];
+			Comparable<AnyType>[] cArr = new Comparable[1];
 			cArr[0] = e;
 			head = new Node(0, cArr, null);
 			return;
@@ -119,7 +119,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		size--;
 		
 		
-		//remove e from the nodes array, put it back into node
+		//remove e from the nodes array
 		if(node.array.length == 1) { //if the length is 1 then just exit since we cant split it
 			return;
 		}
@@ -139,8 +139,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 			if(q.isEmpty() == true) { 
 				break;
 			}
-			size++;
-			Node newNode = new Node(power(2, i), q.poll(), null);
+			Node newNode = new Node(i, q.poll(), null);
 			PlaceNode(newNode);
 		}
 		
@@ -262,7 +261,6 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 			PlaceNode(node);
 		}
 
-		throw new RuntimeException("You need to implement this method!");
 	}
 
 	/**
@@ -273,7 +271,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		String s = new String("");
 		Node node = head;
 		while(node != null) {
-			s = s.concat(node.power + ": " + node.array.toString() + "\n");
+			s = s.concat(node.power + ": " + node.toString() + "\n");
 			node = node.next;
 		}
 		return s;
@@ -297,10 +295,10 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		if(n == null || n.next == null) {
 			return;
 		}
-		
+	
 		if(n.array.length == n.next.array.length) {
 			n.array = merge(n.array, n.next.array);
-			n.power = n.power + n.next.power;
+			n.power += 1;
 			n.next = n.next.next;
 			mergeDownHelper(n);
 		} else {
@@ -350,7 +348,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		int freq = 1;
 		
 		//parse the left side of the found index
-		for(int i = index; i >= 0; i--) {
+		for(int i = index - 1; i >= 0; i--) {
 			if(a[i].compareTo(item) == 0) {
 				freq++;
 			} else if(a[i].compareTo(item) < 0) { //exit this search if we pass where the item could be
@@ -359,7 +357,7 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		}
 		
 		//parse the right side of the found index
-		for(int i = index; i < a.length; i++) {
+		for(int i = index + 1; i < a.length; i++) {
 			if(a[i].compareTo(item) == 0) {
 				freq++;
 			} else if(a[i].compareTo(item) > 0) { //exit this search if we pass where the item could be
@@ -517,7 +515,13 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		 */
 		public String toString()
 		{
-			return java.util.Arrays.toString(array);
+			String string = new String("[");
+			string = string.concat(array[0].toString());
+			for(int i = 1; i < array.length; i++) {
+				string = string.concat(", " + array[i].toString());
+			}
+			string = string.concat("]");
+			return string;
 			
 		}
 	}

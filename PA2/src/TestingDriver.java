@@ -33,6 +33,7 @@ public class TestingDriver
 			d.add(2);
 			if(!d.toString().equals("1: [1, 2]\n"))
 			{
+				String s = d.toString();
 				throw new Exception();
 			}
 			d.add(3);
@@ -47,6 +48,7 @@ public class TestingDriver
 			}
 			if(!d.toString().equals("4: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]\n"))
 			{
+				String string = d.toString();
 				throw new Exception();
 			}
 		}
@@ -64,16 +66,20 @@ public class TestingDriver
 			d.remove(1);
 			d.add(1);
 			d.remove(1);
+			int i = d.size();
 			if(!d.toString().equals(""))
 			{
+				
 				throw new Exception();
 			}
 			d.add(1);
 			d.add(2);
 			d.add(3);
 			d.remove(1);
+			i = d.size();
 			if(!d.toString().equals("1: [2, 3]\n"))
 			{
+				
 				throw new Exception();
 			}
 		}
@@ -118,6 +124,8 @@ public class TestingDriver
 			{
 				if(d.frequency(1) != n-1 || d.frequency(2) != n-1)
 				{
+					int i = d.frequency(1);
+					int j = d.frequency(2);
 					throw new Exception();
 				}
 				d.add(1);
