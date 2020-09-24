@@ -43,7 +43,7 @@ public class Runner {
 	}
 	
 	private static void RemoveCode(Dictionary<String> d) {
-		System.out.println("\nEnter a code to check its frequency\n");
+		System.out.println("\nEnter a code to remove\n");
 		Scanner scanner = new Scanner(System.in);
 		String inputString = scanner.nextLine();
 		while(d.contains(inputString) == true) {
@@ -87,19 +87,23 @@ public class Runner {
 				PrintMainMenu();
 				Scanner scanner = new Scanner(System.in);
 				String inputString = scanner.nextLine();
-				if(inputString != "1" && inputString != "2" && inputString != "3" && inputString != "4") {
+				if(inputString.compareToIgnoreCase(new String("1")) != 0 && inputString.compareToIgnoreCase(new String("2")) != 0 
+						&& inputString.compareToIgnoreCase(new String("3")) != 0 && inputString.compareToIgnoreCase(new String("4")) != 0) {
 					System.out.println("\nPlease enter a valid menu option.\n");
 					continue;
 				}
-				
-				if(inputString == "1") {
+				//&& inputString != "2" && inputString != "3" && inputString != "4"
+				if(inputString.compareToIgnoreCase(new String("1")) == 0) {
 					GetFrequency(dict);
-				} else if (inputString == "2") {
+				} else if (inputString.compareToIgnoreCase(new String("2")) == 0) {
 					CheckGuessed(dict);
-				} else if (inputString == "3") {
+				} else if (inputString.compareToIgnoreCase(new String("3")) == 0) {
+					
 					RemoveCode(dict);
+					
 				} else {
 					System.out.println("\nQuitting, have a nice day!\n");
+					
 					break;
 				}
 		}	

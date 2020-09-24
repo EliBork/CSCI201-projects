@@ -87,6 +87,8 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 	 */
 	public void remove(AnyType e)
 	{
+
+		
 		if(e == null)
 		{
 			return;
@@ -135,14 +137,15 @@ public class Dictionary<AnyType extends Comparable<AnyType>>  implements Diction
 		
 		//get queue from node
 		java.util.Queue<Comparable[]> q = splitUp(node.array, node.power);
-		for(int i = 0; i < q.size(); i++) { //go through each array in the q, make a node from it, then find that nodes spot
+		int s = q.size();
+		for(int i = 0; i <= s; i++) { //go through each array in the q, make a node from it, then find that nodes spot
 			if(q.isEmpty() == true) { 
 				break;
 			}
 			Node newNode = new Node(i, q.poll(), null);
 			PlaceNode(newNode);
 		}
-		
+	
 	}
 	
 	private void PlaceNode(Node n) { //finds this nodes spot then merges if needed
